@@ -1,4 +1,16 @@
 import React from 'react';
+import _ from 'lodash';
+import { useSelector } from 'react-redux';
+import { req } from 'react-reqq';
+import { AUTH } from 'modules/auth/constants';
+
+export const useAuth = () => {
+  const isAuth = useSelector(state => _.get(state, `api.${AUTH}`));
+  React.useEffect(() => {
+    req.set(AUTH, !!sessionStorage.getItem('token'));
+  }, []);
+  return [isAuth];
+}
 
 const PING_INTERVAL = 2000;
 const wait = (t = 1000) => new Promise(r => setTimeout(r, t));

@@ -1,4 +1,6 @@
 const express = require('express');
+const _ = require('lodash');
+
 const routes = express.Router();
 
 const RequestController = require('./controllers/RequestController');
@@ -12,7 +14,30 @@ routes.post('/chatbot-webhook', ChatbotController.message);
 routes.get('/request', RequestController.index);
 routes.post('/request/:slug', RequestController.createBySlug);
 
-routes.post('/authenticate', (req, res) => res.json({ token: '' }));
+routes.post('/authenticate', (req, res) => {
+  console.log(req.body);
+  const email = _.get(req, 'body.email');
+  const password = _.get(req, 'body.password');
+  if (email !== 'admin@email.com' || password !== '123123123') {
+    res.status(400).json({
+      message: 'Invalid Credentials'
+    });
+    return;
+  }
+  res.json({ token: 'bd292479-36d8-4d47-bcd2-6aafb0ab7511' });
+});
+
+routes.use('/', (req, res, next) => {
+  const token = _.get(req, 'headers.authorization');
+  console.log(token);
+  if (_.isEmpty(token || '') || token !== 'Bearer bd292479-36d8-4d47-bcd2-6aafb0ab7511') {
+    res.status(403).json({
+      message: 'Access Denied!',
+    });
+    return;
+  }
+  next();
+});
 
 // USER
 routes.use('/my', require('./middleware/my'));
