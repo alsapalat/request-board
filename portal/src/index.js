@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 import { configureApi } from 'react-reqq';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import './assets/bootstrap/scss/bootstrap.css';
 
 export const store = configureApi({
   endpoint: 'http://localhost:8000',

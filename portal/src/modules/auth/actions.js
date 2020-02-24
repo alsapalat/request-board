@@ -11,7 +11,7 @@ export const login = (payload) => req.post({
     const token = _.get(res, 'response.token');
     sessionStorage.setItem('token', token);
     req.set(c.AUTH, true);
-  },
+  }
 });
 
 export const logout = () => {
